@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EG+Garamond:wght@400;500;600;700&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+  <title>Pomodoro App</title>
+  </head>
+  <body>
+    <div class="app-container">
+    
+  </body>
+  <script src="./app.js"></script>
+
+  <div class="app-container">
+  <h1>pomodoro</h1>
+  <div class="app-message">press start to begin</div>
+  <div class="app-circle">
+    <div class="circle-shape">
+      <div class="semi-circle right-side circle-mask"></div>
+      <div class="semi-circle right-side circle"></div>
+      <div class="semi-circle left-side circle-mask"></div>
+      <div class="semi-circle left-side circle"></div>
+    </div>
+    <div class="app-counter-box">
+      <p><span class="minutes">25</span>:<span class="seconds">00</span></p>
+    </div>
+    <button class="btn-start">start</button>
+    <button class="btn-pause">Pause</button>
+  </div>
+  <button class="done">DONE</button>
+</div>
+</div>
+<style>
+
+
+html {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.8px;
+  min-height: 100vh;
+  color: #d8e9ef;
+  background-image: linear-gradient(-20deg, #025159 0%, #733b36 100%);
+  background-size: cover;
+}
+
+h1 {
+  margin: 0 auto 10px auto;
+  color: #d8e9ef;
+}
+
+p {
+  margin: 0;
+}
+
+.app-message {
+  height: 20px;
+  margin: 10px auto 20px auto;
+}
+
+.app-container {
+  width: 250px;
+  height: 420px;
+  margin: 40px auto;
+  text-align: center;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.app-circle {
+  position: relative;
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+}
+
+.circle-shape {
+  pointer-events: none;
+}
+
+.semi-circle {
+  position: absolute;
+  width: 100px;
+  height: 200px;
+  box-sizing: border-box;
+  border: solid 6px;
+}
+
+.left-side {
+  top: 0;
+  left: 0;
+  transform-origin: right center;
+  transform: rotate(0deg);
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+  border-right: none;
+  z-index: 1;
+}
+
+ .right-side {
+  top: 0;
+  left: 100px;
+  transform-origin: left center;
+  transform: rotate(0deg);
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+  border-left: none;
+}
+
+.circle {
+  border-color: #bf5239;
+}
+
+.circle-mask {
+  border-color: #e85a71;
+}
+
+.app-counter-box {
+  font-family: 'Droid Sans Mono', monospace;
+  font-size: 250%;
+  position: relative;
+  top: 50px;
+  color: #d8e9ef;
+}
+
+button {
+  position: relative;
+  top: 50px;
+  font-size: 80%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  background: none;
+  outline: none;
+  color: #d8e9ef;
+}
+
+button:hover {
+  color: #90c0d1;
+}
+
+ .done{
+    width: 161.8px;
+    height: 100px;
+    background: linear-gradient(90deg, #ffd700 0%, #ffec8b 100%);
+    color: #333;
+    border-radius: 8px;
+    border: 2px solid #bfa100;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(191, 162, 0, 0.15);
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+}
+
+</style>
+
+<script>
+
+const bells = new Audio('./sounds/bell.wav'); 
+const startBtn = document.querySelector('.btn-start'); 
+const pauseBtn = document.querySelector('.btn-pause'); 
+const session = document.querySelector('.minutes'); 
+let myInterval; 
+let state = true;
+
+const appTimer = () => {
+  const sessionAmount = Number.parseInt(session.textContent)
+
+  if(state) {
+    state = false;
+    let totalSeconds = sessionAmount * 60;
+
+    const updateSeconds = () => {
+      
+        const minuteDiv = document.querySelector('.minutes');
+  const secondDiv = document.querySelector('.seconds');
+
+  totalSeconds--;
+
+  let minutesLeft = Math.floor(totalSeconds/60);
+  let secondsLeft = totalSeconds % 60;
+
+  if(secondsLeft < 10) {
+    secondDiv.textContent = '0' + secondsLeft;
+  } else {
+    secondDiv.textContent = secondsLeft;
+  }
+  minuteDiv.textContent = `${minutesLeft}`
+
+  if(minutesLeft === 0 && secondsLeft === 0) {
+    bells.play()
+    clearInterval(myInterval);
+  }
+
+    }
+    myInterval = setInterval(updateSeconds, 1000);
+  } else {
+    alert('Session has already started.')
+  }
+}
+
+const pauseTimer = () => {
+    if (myInterval) {
+        clearInterval(myInterval);
+        state = true;
+    }
+};
+pauseBtn.removeEventListener('click', appTimer);
+pauseBtn.addEventListener('click', pauseTimer);
+
+startBtn.addEventListener('click', appTimer);
+
+</script>
+
+
+
+</html>
