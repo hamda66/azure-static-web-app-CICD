@@ -40,3 +40,23 @@ Below is a visual representation of the deployed resources and their relationshi
     terraform plan
     terraform apply
     ```
+
+---
+
+## Estimated Monthly Cost
+
+The following are approximate monthly costs for running this Azure environment (as of 2025, actual prices may vary by region and usage):
+
+- **Azure Static Web App (Standard SKU):** ~£7/month
+- **App Service Plan (Linux S1):** ~£57/month
+- **Azure Storage Account (Standard, LRS, minimal usage):** ~£2/month
+- **Azure Linux Function App (on S1 plan):** Included in App Service Plan cost
+
+**Total Estimated Cost:**  
+**~£66/month**
+
+> **Note:**  
+> - Costs can vary based on region, usage, and additional features (e.g., bandwidth, storage, custom domains).
+> - Conversion based on an approximate rate of £1 = $1.27 (2025). Please check the [Azure Pricing Calculator](https://azure.com/pricing/calculator) and current exchange rates for the most accurate and up-to-date pricing.
+
+---
