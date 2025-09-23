@@ -1,9 +1,3 @@
-
-resource "random_integer" "ran_num" {
-  min = 1
-  max = 69999
-}
-
 resource "random_string" "ran_str" {
   length = 5
   upper = false
