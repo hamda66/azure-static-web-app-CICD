@@ -7,12 +7,12 @@ resource "random_string" "ran_str" {
 // resource group
 resource "azurerm_resource_group" "static_rg" {
   name = "static_rg"
-  location = "westeurope"
+  location = var.location
 }
 
 resource "azurerm_static_web_app" "test_site" {
   name = "test-site"
-  location = "westeurope"
+  location = var.location
   resource_group_name = azurerm_resource_group.static_rg.name
   sku_size = "Standard"
   sku_tier = "Standard"
@@ -22,8 +22,8 @@ resource "azurerm_static_web_app" "test_site" {
 // Srorage account can only consist of lowercase letters and numbers, and must be between 3 and 24 characters long and be globally unique
 
 resource "azurerm_storage_account" "staic_site_storage" {
-  name = "storagesite${random_string.ran_str.result}"
-  location = azurerm_resource_group.static_rg.location
+  name = "${var.storage_account_name}${random_string.ran_str.result}"
+  location = var.location
   account_replication_type = "LRS"
   account_tier = "Standard"
   resource_group_name = azurerm_resource_group.static_rg.name
@@ -32,7 +32,7 @@ resource "azurerm_storage_account" "staic_site_storage" {
 
 resource "azurerm_service_plan" "static_service" {
   name                = "static_servic"
-  location            = "westeurope"
+  location            = var.location
   resource_group_name = azurerm_resource_group.static_rg.name
   os_type             = "Linux"
   sku_name            = "S1"
@@ -43,7 +43,7 @@ resource "azurerm_service_plan" "static_service" {
 
 resource "azurerm_linux_function_app" "func" {
   name                =  "func${random_string.ran_str.result}"
-  location            = azurerm_resource_group.static_rg.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.static_rg.name
   service_plan_id     = azurerm_service_plan.static_service.id
   storage_account_name       = azurerm_storage_account.staic_site_storage.name
